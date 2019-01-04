@@ -112,6 +112,7 @@ $(document).ready(function() {
 	});
 
 	if (localStorage.getItem('display') == 'list') {
+		$('#grid-view').trigger('click');
 		$('#list-view').trigger('click');
 		$('#list-view').addClass('active');
 	} else {

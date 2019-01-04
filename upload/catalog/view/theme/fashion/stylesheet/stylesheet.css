@@ -631,8 +631,11 @@ a.thumbnail.active, a.thumbnail:focus, a.thumbnail:hover {
 @media (min-width: 767px) {
 .product-list .product-thumb .image {
 	float: left;
-	padding: 0 15px;
+	padding: 0 50px;
 }
+}
+.product-list .product-thumb .caption {
+	padding: 50px 50px 0px 15px;
 }
 .product-thumb h4 {
 	/*font-weight: bold;*/
