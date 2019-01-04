@@ -264,10 +264,15 @@ class ControllerAccountReturn extends Controller {
 	}
 
 	public function add() {
+		if (!$this->customer->isLogged()) {
+			$this->session->data['redirect'] = $this->url->link('account/return/add', '', true);
+
+			$this->response->redirect($this->url->link('account/login', '', true));
+		}
+
 		$this->load->language('account/return');
 
 		$this->load->model('account/return');
-
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
 			$return_id = $this->model_account_return->addReturn($this->request->post);
 
@@ -326,7 +331,8 @@ class ControllerAccountReturn extends Controller {
 		$data['text_yes'] = $this->language->get('text_yes');
 		$data['text_no'] = $this->language->get('text_no');
 
-		$data['entry_order_id'] = $this->language->get('entry_order_id');
+		$data['entry_order_id'] = $this->language->get('entry_order_id');		
+		$data['entry_order'] = "选择订单";
 		$data['entry_date_ordered'] = $this->language->get('entry_date_ordered');
 		$data['entry_firstname'] = $this->language->get('entry_firstname');
 		$data['entry_lastname'] = $this->language->get('entry_lastname');
@@ -408,6 +414,22 @@ class ControllerAccountReturn extends Controller {
 
 		if (isset($this->request->get['product_id'])) {
 			$product_info = $this->model_catalog_product->getProduct($this->request->get['product_id']);
+		}
+		
+		$results = $this->model_account_order->getOrdersByStatuses((array)$this->config->get('config_complete_status') ,0, 20);
+		if(!$results){
+			$data['error_warning']  = "no order can be returned";
+		}
+		else{
+			foreach ($results as $result) {
+				$data['orders'][] = array(
+					'order_id'   => $result['order_id'],
+					'name'       => $result['firstname'] . ' ' . $result['lastname'],
+					'status'     => $result['status'],
+					'date_added' => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
+					'total'      => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value'])
+				);
+			}
 		}
 
 		if (isset($this->request->post['order_id'])) {
@@ -544,6 +566,20 @@ class ControllerAccountReturn extends Controller {
 	protected function validate() {
 		if (!$this->request->post['order_id']) {
 			$this->error['order_id'] = $this->language->get('error_order_id');
+		}
+		else
+		{
+			$this->load->model('account/order');
+			$order = $this->model_account_order->getOrder($this->request->post['order_id']);
+			if(!$order || (int)$order["customer_id"] != (int)$this->customer->getId() || !in_array($order["order_status_id"],(array)$this->config->get('config_complete_status')))
+			{
+				$data['error_warning']  = "no order can be returned";
+				$this->error['order_id'] = $data['error_warning'] ;
+			}
+			else
+			{
+				$this->request->post['date_ordered'] = $order['date_added'];
+			}
 		}
 
 		if ((utf8_strlen(trim($this->request->post['firstname'])) < 1) || (utf8_strlen(trim($this->request->post['firstname'])) > 32)) {

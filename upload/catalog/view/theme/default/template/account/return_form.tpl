@@ -59,6 +59,17 @@
             </div>
           </div>
           <div class="form-group required">
+            <label class="col-sm-2 control-label" for="select-order"><?php echo $entry_order; ?></label>
+            <div class="col-sm-10">
+                <select name="order_id" class="form-control" id = "select-order" >
+                  <?php foreach ($orders as $order) { ?>
+                  <option value="<?php echo $order['order_id']; ?>"><?php echo $order['order_id']; ?>: <?php echo $order['date_added']; ?>, <?php echo $order['name']; ?>, <?php echo $order['status']; ?></option>
+                  <?php } ?>
+                </select>
+            </div>
+          </div>
+          <!-- 
+          <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-order-id"><?php echo $entry_order_id; ?></label>
             <div class="col-sm-10">
               <input type="text" name="order_id" value="<?php echo $order_id; ?>" placeholder="<?php echo $entry_order_id; ?>" id="input-order-id" class="form-control" />
@@ -75,6 +86,7 @@
                 </span></div>
             </div>
           </div>
+          --> 
         </fieldset>
         <fieldset>
           <legend><?php echo $text_product; ?></legend>
