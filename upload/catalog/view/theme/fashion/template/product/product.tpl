@@ -66,7 +66,16 @@
           <ul class="list-unstyled">
             <?php if (!$special) { ?>
             <li>
-              <h2><?php echo $price; ?></h2>
+              <?php echo $text_manufacturer; ?> 
+              <?php if (!$manufacturer_flag || $manufacturer_flag == 0) {  
+                  echo $manufacturer; 
+              }
+              else{
+              ?>
+              <a href="<?php echo $manufacturers; ?>"> 
+                <?php echo $manufacturer; ?>
+              </a>
+              <?php }?>
             </li>
             <?php } else { ?>
             <li><span style="text-decoration: line-through;"><?php echo $price; ?></span></li>

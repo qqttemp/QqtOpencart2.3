@@ -56,4 +56,11 @@ class ModelCatalogManufacturer extends Model {
 			return $manufacturer_data;
 		}
 	}
+	
+	public function getStoreManufacturer($manufacturer_id)
+	{
+		$query=$this->db->query("SELECT * FROM " . DB_PREFIX . "manufacturer_to_store WHERE manufacturer_id='" . (int)$manufacturer_id . "'");
+
+		return $query->rows;
+	}
 }
