@@ -1,0 +1,29 @@
+1. 本接口兼容 2.3.0.2 以上版本的 opencart 商城（！！未详尽测试所有版本！！）。
+
+
+2. 将 admin、catalog、image、system 目录请直接复制到您网站的根目录。
+
+
+3. 通过 opencart 后台启用 qqtpay，并配置相关选项（网站编号，商户密钥，网关地址，详询客服）。
+
+
+4. 后台配置Mode推荐使用Api的模式
+
+
+5. 支付网关地址gateway url:  https://cashier.quanqiutech.com/
+   支持的卡类型：visa，jcb，mastercard
+
+
+6. 异常及日志保存在网站的根目录下的 system/logs 目录中以 qqtpay-log 开头，每天会产生一个日志文件（如果无法产生日志，请检查该文件夹是否有写入权限）。
+
+
+7. 支付完成返回地址:    http://www.域名/index.php?route=extension/checkout/return_quanqiupay
+   订单状态变更通知地址:    http://www.域名/index.php?route=extension/payment/quanqiupay/callback
+
+
+8. 测试时卡号：4111111111111111
+   过期日期  ：大于当前日期
+   cvv2      :111
+   当网站提示 ："Test Card"
+   且商户后台有这笔待支付的订单时，说明接口安装成功了
+   
